@@ -5,3 +5,4 @@
 [node name="MainGame" type="Node2D"]
 
 [node name="Level" parent="." instance=ExtResource("1_qlq70")]
+PADDLE_SPEED = 1200

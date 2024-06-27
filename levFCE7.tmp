@@ -1,0 +1,117 @@
+[gd_scene load_steps=10 format=3 uid="uid://bu3n6wt7hiec8"]
+
+[ext_resource type="Script" path="res://level.gd" id="1_m715g"]
+[ext_resource type="Script" path="res://Player.gd" id="2_o7c1i"]
+[ext_resource type="Script" path="res://Ball.gd" id="3_ss1fs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_okfx4"]
+size = Vector2(20, 120)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w6t7d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eugrl"]
+size = Vector2(1152, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_s3obw"]
+size = Vector2(1152, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c0iiy"]
+size = Vector2(122, 667)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qnhle"]
+size = Vector2(64, 640)
+
+[node name="Level" type="Node2D"]
+script = ExtResource("1_m715g")
+
+[node name="Wall" type="Area2D" parent="."]
+
+[node name="ScoreCount" type="CollisionPolygon2D" parent="Wall"]
+scale = Vector2(1.125, 1)
+polygon = PackedVector2Array(0, -16, 0, 656, 32, 656, 32, -16)
+
+[node name="ColorRect" type="ColorRect" parent="Wall"]
+offset_top = -16.0
+offset_right = 32.0
+offset_bottom = 656.0
+
+[node name="Player" type="StaticBody2D" parent="."]
+position = Vector2(1100, 324)
+script = ExtResource("2_o7c1i")
+
+[node name="ColorRect" type="ColorRect" parent="Player"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -60.0
+offset_right = 20.0
+offset_bottom = 60.0
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+position = Vector2(10, 0)
+shape = SubResource("RectangleShape2D_okfx4")
+
+[node name="Ball" type="CharacterBody2D" parent="."]
+position = Vector2(576, 324)
+collision_mask = 3
+script = ExtResource("3_ss1fs")
+
+[node name="ColorRect" type="ColorRect" parent="Ball"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -5.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball"]
+scale = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_w6t7d")
+
+[node name="Borders" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="Top" type="CollisionShape2D" parent="Borders"]
+position = Vector2(576, -32)
+shape = SubResource("RectangleShape2D_eugrl")
+
+[node name="Bottom" type="CollisionShape2D" parent="Borders"]
+position = Vector2(576, 672)
+shape = SubResource("RectangleShape2D_s3obw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Borders"]
+position = Vector2(-32, 320)
+shape = SubResource("RectangleShape2D_c0iiy")
+
+[node name="Score" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Score"]
+position = Vector2(1184, 320)
+shape = SubResource("RectangleShape2D_qnhle")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="PlayerScore" type="Label" parent="HUD"]
+offset_left = 576.0
+offset_top = 5.0
+offset_right = 616.0
+offset_bottom = 74.0
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BallTimer" type="Timer" parent="HUD"]
+wait_time = 0.5
+one_shot = true
+autostart = true
+
+[connection signal="body_entered" from="Wall" to="." method="_on_wall_body_entered"]
+[connection signal="body_entered" from="Score" to="." method="_on_score_body_entered"]
+[connection signal="timeout" from="HUD/BallTimer" to="." method="_on_ball_timer_timeout"]

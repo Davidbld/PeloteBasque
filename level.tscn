@@ -35,11 +35,11 @@ offset_top = -16.0
 offset_right = 32.0
 offset_bottom = 656.0
 
-[node name="Player" type="StaticBody2D" parent="."]
+[node name="Paddle" type="StaticBody2D" parent="."]
 position = Vector2(1100, 324)
 script = ExtResource("2_o7c1i")
 
-[node name="ColorRect" type="ColorRect" parent="Player"]
+[node name="PaddleSkin" type="ColorRect" parent="Paddle"]
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
@@ -48,7 +48,7 @@ offset_right = 20.0
 offset_bottom = 60.0
 grow_vertical = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="PaddleHitBox" type="CollisionShape2D" parent="Paddle"]
 position = Vector2(10, 0)
 shape = SubResource("RectangleShape2D_okfx4")
 
@@ -97,20 +97,95 @@ shape = SubResource("RectangleShape2D_qnhle")
 
 [node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="PlayerScore" type="Label" parent="HUD"]
-offset_left = 576.0
-offset_top = 5.0
-offset_right = 616.0
-offset_bottom = 74.0
-theme_override_font_sizes/font_size = 50
-text = "0"
+[node name="Control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/Control"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 66.0
+grow_horizontal = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/Control/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="PlayerScore" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Score: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BallTimer" type="Timer" parent="HUD"]
+[node name="MaxScore" type="Label" parent="HUD/Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 20
+text = "(Comming Soon)
+Max: 0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VersionDisplay" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/VersionDisplay"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.0
+offset_top = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/VersionDisplay/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Version" type="Label" parent="HUD/VersionDisplay/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Version 1.1.0.0
+27.06.24"
+horizontal_alignment = 2
+vertical_alignment = 2
+
+[node name="BallTimer" type="Timer" parent="."]
+wait_time = 0.5
 one_shot = true
 autostart = true
 
 [connection signal="body_entered" from="Wall" to="." method="_on_wall_body_entered"]
 [connection signal="body_entered" from="Score" to="." method="_on_score_body_entered"]
-[connection signal="timeout" from="HUD/BallTimer" to="." method="_on_ball_timer_timeout"]
+[connection signal="timeout" from="BallTimer" to="." method="_on_ball_timer_timeout"]
