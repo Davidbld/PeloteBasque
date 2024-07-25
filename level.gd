@@ -19,10 +19,13 @@ func _on_ball_timer_timeout():
 
 func _on_score_body_entered(body):
 	score[0] = 0
-	max = 0
 	score_label.text = "Score: " + str(score[0])
 	$BallTimer.start()
 
 func _on_wall_body_entered(body):
 	score[0] += 1
 	score_label.text = "Score: " + str(score[0])
+	if score[0]>max:
+		max = score[0]
+		maxScore_label.text = "Max: " +str(max)
+	

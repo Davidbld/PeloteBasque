@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://bu3n6wt7hiec8"]
+[gd_scene load_steps=11 format=3 uid="uid://bu3n6wt7hiec8"]
 
 [ext_resource type="Script" path="res://level.gd" id="1_m715g"]
 [ext_resource type="Script" path="res://Player.gd" id="2_o7c1i"]
 [ext_resource type="Script" path="res://Ball.gd" id="3_ss1fs"]
+[ext_resource type="Texture2D" uid="uid://7n5ugxthhqk7" path="res://BackgroundMain.png" id="4_t8l14"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_okfx4"]
 size = Vector2(20, 120)
@@ -138,8 +139,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 20
-text = "(Comming Soon)
-Max: 0"
+text = "Max: 0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -176,8 +176,8 @@ size_flags_vertical = 4
 
 [node name="Version" type="Label" parent="HUD/VersionDisplay/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Version 1.1.0.0
-27.06.24"
+text = "Version 1.1.0.1
+25.07.24"
 horizontal_alignment = 2
 vertical_alignment = 2
 
@@ -185,6 +185,14 @@ vertical_alignment = 2
 wait_time = 0.5
 one_shot = true
 autostart = true
+
+[node name="BackgroundMain" type="Sprite2D" parent="."]
+show_behind_parent = true
+light_mask = 4
+visibility_layer = 4
+position = Vector2(576, 324)
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("4_t8l14")
 
 [connection signal="body_entered" from="Wall" to="." method="_on_wall_body_entered"]
 [connection signal="body_entered" from="Score" to="." method="_on_score_body_entered"]
