@@ -14,8 +14,12 @@ set(SOURCES
     src/Models/Ball.cpp
     src/Models/Player.cpp
     src/Models/GameState.cpp
+    src/Models/MenuState.cpp
     src/Views/GameView.cpp
+    src/Views/MenuView.cpp
+    src/Views/PauseMenuView.cpp
     src/Controllers/GameController.cpp
+    src/Controllers/MenuController.cpp
 )
 
 # Create executable

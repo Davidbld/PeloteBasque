@@ -8,7 +8,7 @@ private:
     sf::Vector2f position;
     float speed;
     float height;
-    const float PADDLE_SPEED = 600.0f;
+    static constexpr float PADDLE_SPEED = 600.0f;
 
 public:
     Player(const sf::Vector2f& startPos, float paddleHeight);

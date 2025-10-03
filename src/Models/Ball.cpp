@@ -1,4 +1,5 @@
 #include "Ball.hpp"
+#include "../GameConstants.hpp"
 #include <random>
 
 Ball::Ball(const sf::Vector2f& windowSize) {
@@ -6,9 +7,11 @@ Ball::Ball(const sf::Vector2f& windowSize) {
 }
 
 void Ball::reset(const sf::Vector2f& windowSize) {
-    // Position initiale près du mur de droite
-    position.x = windowSize.x * 0.75f; // à 75% de la largeur de l'écran
-    position.y = std::rand() % static_cast<int>(windowSize.y - 400) + 200;
+    // Position initiale près du mur de droite en tenant compte des marges
+    float effectiveWidth = windowSize.x - 2 * MARGIN_X;
+    float effectiveHeight = windowSize.y - 2 * MARGIN_Y;
+    position.x = effectiveWidth * 0.75f; // à 75% de la largeur de la zone de jeu
+    position.y = std::rand() % static_cast<int>(effectiveHeight - 400) + 200;
     speed = START_SPEED;
     direction = generateRandomDirection();
 }

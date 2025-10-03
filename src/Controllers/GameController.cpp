@@ -1,4 +1,6 @@
 #include "GameController.hpp"
+#include "../GameConstants.hpp"
+#include <memory>
 
 GameController::GameController(GameView& gameView, const sf::Vector2f& windowSize)
     : view(gameView),
@@ -7,12 +9,21 @@ GameController::GameController(GameView& gameView, const sf::Vector2f& windowSiz
       windowSize(windowSize),
       ballActive(true),
       gamePaused(false),
+      quitGame(false),
       resetTimer(0.f) {
     initialize();
 }
 
 void GameController::initialize() {
     ball.reset(sf::Vector2f(800.f, 600.f));
+}
+
+void GameController::togglePause() {
+    gamePaused = !gamePaused;
+    if (gamePaused && !pauseMenu) {
+        pauseMenu = std::make_unique<PauseMenuView>(view.getWindow());
+    }
+    mouseWasPressed = false; // Reset mouse press state when toggling pause
 }
 
 void GameController::update() {
@@ -33,34 +44,57 @@ void GameController::update() {
             // Vérification des collisions
             checkCollisions();
         }
+        
+        // Rendu du jeu
+        view.render(player, ball, gameState, false);
+    } else {
+        // En pause, on affiche d'abord le jeu puis le menu de pause par-dessus
+        view.render(player, ball, gameState, false);
+        if (pauseMenu) {
+            pauseMenu->draw();
+        }
     }
-    
-    // Rendu (même en pause)
-    view.render(player, ball, gameState, gamePaused);
 }
 
 void GameController::handleInput() {
-    // Les mouvements ne sont possibles que si le jeu n'est pas en pause
     if (!gamePaused) {
+        // Contrôles du jeu normal
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
             player.moveUp(clock.getElapsedTime().asSeconds());
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
             player.moveDown(clock.getElapsedTime().asSeconds());
         }
+    } else if (pauseMenu) {
+        // Gestion des entrées du menu pause
+        sf::Vector2i mousePos = sf::Mouse::getPosition(view.getWindow());
+        
+        bool mousePressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+        if (mousePressed && !mouseWasPressed && pauseMenu->isMouseOverButton(mousePos)) {
+            PauseOption option = pauseMenu->getClickedButton(mousePos);
+            if (option == PauseOption::CONTINUE) {
+                gamePaused = false;
+                pauseMenu.reset();
+            } else if (option == PauseOption::QUIT) {
+                quitGame = true;
+            }
+        }
+        mouseWasPressed = mousePressed;
     }
 }
 
 void GameController::checkCollisions() {
     // Collision avec les murs (haut et bas)
-    if (ball.getPosition().y <= 0 || ball.getPosition().y >= windowSize.y) {
+    float effectiveWindowHeight = windowSize.y - 2 * MARGIN_Y;
+    if (ball.getPosition().y <= 0 || ball.getPosition().y >= effectiveWindowHeight) {
         sf::Vector2f currentDir = ball.getDirection();
         currentDir.y = -currentDir.y; // Inverse la direction verticale
         ball.setDirection(currentDir);
     }
     
     // Collision avec le mur de droite
-    if (ball.getPosition().x >= windowSize.x) {
+    float effectiveWindowWidth = windowSize.x - 2 * MARGIN_X;
+    if (ball.getPosition().x >= effectiveWindowWidth) {
         sf::Vector2f currentDir = ball.getDirection();
         currentDir.x = -currentDir.x; // Inverse la direction horizontale
         ball.setDirection(currentDir);

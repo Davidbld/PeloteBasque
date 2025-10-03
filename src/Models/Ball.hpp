@@ -8,10 +8,10 @@ private:
     sf::Vector2f position;
     sf::Vector2f direction;
     float speed;
-    const float START_SPEED = 500.0f;
-    const float ACCELERATION = 50.0f;
-    const float WALL_ACCELERATION = 25.0f;  // Accélération plus faible pour le rebond mural
-    const float MAX_Y_VECTOR = 0.6f;
+    static constexpr float START_SPEED = 500.0f;
+    static constexpr float ACCELERATION = 50.0f;
+    static constexpr float WALL_ACCELERATION = 25.0f;  // Accélération plus faible pour le rebond mural
+    static constexpr float MAX_Y_VECTOR = 0.6f;
 
 public:
     Ball(const sf::Vector2f& windowSize);
