@@ -7,7 +7,7 @@ MenuView::MenuView(sf::RenderWindow& window) : window(window) {
 
 void MenuView::loadFont() {
     // Note: You'll need to add a pixel font file to your assets
-    if (!pixelFont.loadFromFile("assets/fonts/pixel.ttf")) {
+    if (!pixelFont.loadFromFile("../assets/fonts/pixel.ttf")) {
         // Fallback to default font if pixel font is not available
         pixelFont.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
     }

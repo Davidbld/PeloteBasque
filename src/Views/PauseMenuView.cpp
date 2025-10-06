@@ -6,7 +6,7 @@ PauseMenuView::PauseMenuView(sf::RenderWindow& window) : window(window) {
 }
 
 void PauseMenuView::loadFont() {
-    if (!pixelFont.loadFromFile("assets/fonts/pixel.ttf")) {
+    if (!pixelFont.loadFromFile("../assets/fonts/pixel.ttf")) {
         pixelFont.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf");
     }
 }
